@@ -25,8 +25,8 @@ jobs:
           command: dotnet dotcover test --dcReportType=XML
       - run:
           command: pwd
-      - store_artifacts:
-          path: ~/project/test_coverage
+      - store_test_results:
+          path: test-results
 workflows:
   test_my_app:
     jobs:
