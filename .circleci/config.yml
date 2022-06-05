@@ -17,7 +17,7 @@ jobs:
           name: Install dotnet-skd-6.0
 
       - run:
-          command: dotnet tool install JetBrains.dotCover.GlobalTools
+          command: dotnet new tool-manifest && dotnet tool install JetBrains.dotCover.GlobalTools
           name: Install and run dotCover tool
       - run:
           command: dotnet build
