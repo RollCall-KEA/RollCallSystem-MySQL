@@ -22,7 +22,7 @@ jobs:
       - run:
           command: dotnet build
       - run:
-          command: dotnet dotcover test --dcReportType=XML
+          command: dotnet dotcover test --output=test-results --dcReportType=XML
       - run:
           command: pwd
       - store_test_results:
