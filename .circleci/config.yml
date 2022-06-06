@@ -23,11 +23,11 @@ jobs:
           when: always
           command: |
               dotnet tool install -g trx2junit
+              echo 'export PATH="$PATH:/root/.dotnet/tools"' >> "$BASH_ENV"
               dotnet test --no-build --logger "trx"
       - run:
           command: |
               export PATH="$PATH:/root/.dotnet/tools"
-              echo 'export PATH="$PATH:/root/.dotnet/tools"' >> "$BASH_ENV"
               trx2junit tests/**/TestResults/*.trx
       - store_test_results:
           path: tests/TestResults
