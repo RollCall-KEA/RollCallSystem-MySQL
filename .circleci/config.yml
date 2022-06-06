@@ -18,15 +18,15 @@ jobs:
       - run:
           command: dotnet build
           name: build
-      - run: 
-          command: dotnet test --no-build --logger "trx"
-          name: run tests
       - run:
           name: export test results
           when: always
           command: |
-              export PATH="$PATH:/root/.dotnet/tools"
               dotnet tool install -g trx2junit
+              dotnet test --no-build --logger "trx"
+      - run:
+          command: |
+              export PATH="$PATH:/root/.dotnet/tools"
               trx2junit tests/**/TestResults/*.trx
       - store_test_results:
           path: tests/TestResults
