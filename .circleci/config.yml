@@ -20,7 +20,7 @@ jobs:
           command: dotnet build
       - run: 
           name: Run tests
-          command: dotnet test --no-build --logger "trx" --output tests/TestResults/
+          command: dotnet test --no-build --logger "trx" --results-directory tests/TestResults/
       - run:
           name: Generate test results
           when: always
