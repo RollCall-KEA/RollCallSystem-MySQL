@@ -27,7 +27,7 @@ jobs:
               dotnet test --no-build --logger "trx"
       - run:
           command: |
-              export PATH="$PATH:/root/.dotnet/tools"
+              export PATH="$BASH_ENV"
               trx2junit tests/**/TestResults/*.trx
       - store_test_results:
           path: tests/TestResults
