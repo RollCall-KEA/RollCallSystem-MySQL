@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.0.1
 
 jobs:
-  test:
+  build_and_test:
     executor:
       name: node/default
     steps:
@@ -15,15 +15,14 @@ jobs:
       - run:
           command: sudo apt-get update && sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
           name: Install dotnet-skd-6.0
-
-      - run:
-          command: dotnet new tool-manifest && dotnet tool install JetBrains.dotCover.GlobalTool
-          name: Install and run dotCover tool
       - run:
           command: dotnet build
-      - run: dotnet test --no-build --logger "trx"
+          name: build
+      - run: 
+          command: dotnet test --no-build --logger "trx"
+          name: run tests
       - run:
-          name: test results
+          name: export test results
           when: always
           command: |
               dotnet tool install -g trx2junit
@@ -34,4 +33,4 @@ jobs:
 workflows:
   test_my_app:
     jobs:
-      - test
+      - build_and_test
