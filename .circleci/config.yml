@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.0.1
 
 jobs:
-  prepare_and_build:
+  build_and_test:
     executor:
       name: node/default
     steps:
@@ -18,23 +18,16 @@ jobs:
       - run:
           name: Build
           command: dotnet build
-  test:
-    executor:
-      name: node/default
-    steps:
       - run: 
           name: Run tests
           command: dotnet test --no-build --logger "trx"
       - run:
           name: Generate test results
           when: always
-          command: dotnet tool install -g trx2junit && trx2junit tests/**/TestResults/*.trx --output test/TestResults
+          command: dotnet tool install -g trx2junit && cd /root/.dotnet/tools && trx2junit tests/**/TestResults/*.trx --output test/TestResults
       - store_test_results:
           path: tests/TestResults
 workflows:
   test_my_app:
     jobs:
-      - prepare_and_build
-      - test:
-          requires:
-             - prepare_and_build
+      - build_and_test
