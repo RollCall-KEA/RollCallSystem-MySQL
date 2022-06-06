@@ -21,12 +21,16 @@ jobs:
           name: Install and run dotCover tool
       - run:
           command: dotnet build
+      - run: dotnet test --no-build --logger "trx"
       - run:
-          command: dotnet dotcover test --output=test-results --dcReportType=XML
-      - run:
-          command: pwd
+          name: test results
+          when: always
+          command: |
+              dotnet tool install -g trx2junit
+              export PATH="$PATH:/root/.dotnet/tools"
+              trx2junit tests/**/TestResults/*.trx
       - store_test_results:
-          path: test-results
+          path: tests/TestResults
 workflows:
   test_my_app:
     jobs:
