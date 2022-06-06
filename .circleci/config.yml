@@ -30,7 +30,10 @@ jobs:
             pwd
             dotnet trx2junit tests/TestResults/*.trx
       - store_test_results:
-          name: Store test results
+          name: Store test results in tests
+          path: tests/TestResults
+      - store_artifacts:
+          name: Store test results in artifacts
           path: tests/TestResults
 workflows:
   build_and_test:
