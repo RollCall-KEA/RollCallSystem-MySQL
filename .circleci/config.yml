@@ -27,7 +27,7 @@ jobs:
           command: |
             dotnet new tool-manifest
             dotnet tool install --local trx2junit
-            dotnet trx2junit tests/**/TestResults/*.trx
+            dotnet trx2junit tests/TestResults/*.trx
       - store_test_results:
           path: tests/TestResults
 workflows:
