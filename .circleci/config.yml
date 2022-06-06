@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.0.1
 
 jobs:
-  build_and_test:
+  test:
     executor:
       name: node/default
     steps:
@@ -16,24 +16,18 @@ jobs:
           command: sudo apt-get update && sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
           name: Install dotnet-skd-6.0
       - run:
+          name: Build
           command: dotnet build
-          name: build
-      - run:
+      - run: 
           name: Run tests
-          command: dotnet test --no-build --logger "trx" --results-directory "tests/TestResults"
+          command: dotnet test --no-build --logger "trx"
       - run:
-          name: Install trx2junit tool
-          environment:
-            PATH: '/root/.dotnet/tools:$PATH'
-          command: |
-            dotnet tool install -g trx2junit
-      - run:
-          name: Convert report file
-          command: |
-              trx2junit tests/**/TestResults/*.trx
+          name: Generate test results
+          when: always
+          command: dotnet tool install -g trx2junit && cd /root/dotnet/tools && trx2junit tests/**/TestResults/*.trx --output test/TestResults
       - store_test_results:
           path: tests/TestResults
 workflows:
   test_my_app:
     jobs:
-      - build_and_test
+      - test
