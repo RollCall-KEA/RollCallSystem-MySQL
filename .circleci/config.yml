@@ -9,6 +9,7 @@ jobs:
       name: node/default
     steps:
       - checkout
+      - run: echo export PATH="$PATH:/root/.dotnet/tools" >> "$BASH_ENV"
       - run:
           command: wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && sudo dpkg -i packages-microsoft-prod.deb
           name: Pre-Install tasks
@@ -24,7 +25,7 @@ jobs:
       - run:
           name: Generate test results
           when: always
-          command: dotnet tool install -g trx2junit && cd /root/.dotnet/tools && trx2junit tests/**/TestResults/*.trx --output test/TestResults
+          command: dotnet tool install -g trx2junit && trx2junit tests/**/TestResults/*.trx --output test/TestResults
       - store_test_results:
           path: tests/TestResults
 workflows:
